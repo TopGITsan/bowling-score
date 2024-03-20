@@ -9,5 +9,4 @@ import { FrameComponent } from '../frame/frame.component';
   styleUrl: './score.component.scss'
 })
 export class ScoreComponent {
-
 }
