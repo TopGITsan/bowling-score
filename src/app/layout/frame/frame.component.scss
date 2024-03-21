@@ -1,5 +1,5 @@
-:host {
-  border-right: 1px solid black;
+#frame {
+  border: 1px solid black;
   min-width: 5rem;
   min-height: 5rem;
   display: flex;
@@ -10,17 +10,23 @@
     display: flex;
   }
 
-  .first, .second {
+  .attempts span {
     display: inline-block;
     text-align: center;
-    width: 50%;
-    padding: 6px 4px;
+    height: 1.5rem;
   }
 
-  .second {
+  #first {
+    flex-grow: 1;
+    align-content: center;
+  }
+
+  #second {
     border: 1px solid #000;
     border-right: none;
     border-top: none;
+    width: 40%;
+    align-content: center;
   }
 
   .score {
@@ -28,6 +34,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    flex-grow: 1;
   }
+}
+
+.current {
+  background-color: aqua;
 }

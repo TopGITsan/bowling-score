@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { ScoreComponent } from './score/score.component';
+import { ScoreComponent } from './layout/score/score.component';
 
 export const routes: Routes = [
   {
