@@ -11,7 +11,7 @@ import { numberToString } from '../../utils/app.helper';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FrameComponent {
-  @Input() score: number = 0;
+  @Input() score: number | null = null;
   @Input() isCurrent: boolean = false;
   @Input({ transform: numberToString }) firstAttempt: string = '';
   @Input({ transform: numberToString }) secondAttempt: string = '';

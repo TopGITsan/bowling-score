@@ -1,7 +1,7 @@
 <div id="frame" [ngClass]="isCurrent ? 'current' : ''">
   <section class="attempts">
-    <span id="first">{{'1'}}</span>
-    <span id="second">{{'/'}}</span>
+    <span id="first">{{firstAttempt}}</span>
+    <span id="second">{{secondAttempt}}</span>
   </section>
   <section class="score">{{score}}</section>
 </div>

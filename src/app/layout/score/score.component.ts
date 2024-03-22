@@ -8,7 +8,7 @@ import {
 import { GameStoreService } from '../../store/game-store.service';
 import { untilDestroyed } from '../../utils/app.helper';
 import { FrameComponent } from '../frame/frame.component';
-import { Game } from '../../model/game.model';
+import { Bowling } from '../../model/game.model';
 
 @Component({
   selector: 'app-score',
@@ -25,7 +25,7 @@ export class ScoreComponent implements OnInit {
   private readonly changeDetectorRef = inject(ChangeDetectorRef);
   private readonly untilDestroyed = untilDestroyed();
 
-  state: Game | undefined;
+  state: Bowling | undefined;
 
   ngOnInit(): void {
     this.gameStoreService.state$.pipe(this.untilDestroyed()).subscribe((state)=> {
