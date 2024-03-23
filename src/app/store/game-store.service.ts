@@ -3,21 +3,27 @@ import {
   BehaviorSubject,
   Observable,
   Subject,
+  asapScheduler,
   concatMap,
   delay,
   distinctUntilChanged,
   map,
+  observeOn,
   of,
+  queueScheduler,
+  take,
   tap,
 } from 'rxjs';
-import { Frame } from '../model/frame.model';
-import { Bowling } from '../model/game.model';
-import { untilDestroyed } from '../utils/app.helper';
+import { Frame, getFrameFirstRoll } from '../model/frame.model';
+import { Bowling, getCurrentFrame, moveToNextFrame, setFrameRollInGame } from '../model/game.model';
+import { random, untilDestroyed } from '../utils/app.helper';
 import {
   BowlingActions,
   GameActionsType,
   NewFrameAction,
+  RollAction,
   StartAction,
+  StoreRollAction,
 } from './game.actions';
 import { INITIAL_GAME_STATE } from './game.state';
 
@@ -56,58 +62,68 @@ export class GameStoreService {
         this.actionsSubject.next(action);
       }
     });
+    this.state$.subscribe(state => console.log('State:', state))
   }
 
   private handleReducers(): void {
-    this.actions$.pipe(this.untilDestroyed()).subscribe((action) => {
-      if (action) {
-        switch (action.type) {
-          case GameActionsType.RESET:
-          case GameActionsType.START:
-            this.stateSubject.next({ ...this.initialGameState });
-            break;
-          case GameActionsType.NEW_FRAME:
-            // TODO
-            break;
-          case GameActionsType.STORE_ROLL:
-            // TODO
-            break;
-          default:
-            break;
+    this.actions$
+      .pipe(this.untilDestroyed(), observeOn(queueScheduler))
+      .subscribe((action) => {
+        if (action) {
+          switch (action.type) {
+            case GameActionsType.RESET:
+            // TODO should delete all frames
+            case GameActionsType.START:
+              // TODO should add empty frames
+              this.stateSubject.next({ ...this.initialGameState });
+              break;
+            case GameActionsType.STORE_ROLL:
+              this.stateSubject.next({
+                ...setFrameRollInGame(moveToNextFrame(this.stateSubject.value), action.pinsKnocked),
+              })
+              break;
+            // TODO: add action to store the score
+            default:
+              break;
+          }
         }
-      }
-    });
+      });
   }
 
   private handleEffects(): Observable<BowlingActions | null> {
     return this.actions$.pipe(
       this.untilDestroyed(),
+      observeOn(asapScheduler),
       tap((action: BowlingActions) => console.log(action)),
       concatMap((action: BowlingActions) => {
         switch (action.type) {
           case GameActionsType.ROLL:
-            // TODO
-            // return this.state$.pipe(
-            //   take(1),
-            //   map((state: Bowling) => {
-            //     const { firstRoll, secondRoll } = this.stateSubject.value;
-            //     let pinsKnocked = 0;
-            //     if (!!!firstRoll) {
-            //       pinsKnocked = Math.floor(Math.random() * 10 + 1);
-            //       return new StoreRollAction(pinsKnocked);
-            //     }
-            //     if (!!!secondRoll && firstRoll < 10) {
-            //       pinsKnocked = random(10, firstRoll);
-            //       return new StoreRollAction(pinsKnocked);
-            //     }
+            return this.state$.pipe(
+              take(1),
+              map((state: Bowling) => {
+                const currentFrame = getCurrentFrame(state);
+                if(!currentFrame) {
+                  return null;
+                }
+                let pinsKnocked = 0;
+                let firstRoll = getFrameFirstRoll(currentFrame);
+                if (!!!getFrameFirstRoll(currentFrame)) {
+                  pinsKnocked = random(0, 11);
+                  return new StoreRollAction(pinsKnocked);
+                }
+                if (firstRoll ?? 0  < 10) {
+                  pinsKnocked = random(0, 11 - (firstRoll ?? 0));
+                  return new StoreRollAction(pinsKnocked);
+                }
+                pinsKnocked = Math.floor(Math.random() * 10 + 1);
+                return new StoreRollAction(pinsKnocked);
+              })
+            );
 
-            //     return new NewFrameAction();
-            //   })
-            // );
-          case GameActionsType.NEW_FRAME:
-            // TODO
-            // const pinsKnocked = Math.floor(Math.random() * 10 + 1);
-            // return of(new StoreRollAction(pinsKnocked));
+          case GameActionsType.STORE_ROLL:
+          // TODO calculateScore on each frame
+          // iterate all frames
+          // TODO call action to store the score on each frame
           default:
             return of(null);
         }
@@ -124,6 +140,6 @@ export class GameStoreService {
   }
 
   handleRoll(): void {
-    // this.actionsSubject.next(new RollAction());
+    this.actionsSubject.next(new RollAction());
   }
 }

@@ -58,7 +58,7 @@ export const initialGameState: Bowling = {
   maxFrames: 10,
   maxPins: 10,
   maxAttempsPerFrame: 2,
-  currentFrame: 0,
+  currentFrameIndex: 0,
   strikeCounter: 0,
   totalScore: 0,
 };

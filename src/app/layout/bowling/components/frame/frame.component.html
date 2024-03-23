@@ -1,0 +1,27 @@
+<div id="frame" [ngClass]="isCurrent ? 'current' : ''">
+  @switch (bonus) {
+  @case ('strike') {
+  <section class="attempts">
+    <span id="first">{{''}}</span>
+    <span id="second">{{'X'}}</span>
+  </section>
+  <section class="score">{{score}}</section>
+  }
+
+  @case ('spare') {
+  <section class="attempts">
+    <span id="first">{{firstAttempt}}</span>
+    <span id="second">{{'/'}}</span>
+  </section>
+  <section class="score">{{score}}</section>
+  }
+
+  @default {
+  <section class="attempts">
+    <span id="first">{{firstAttempt}}</span>
+    <span id="second">{{secondAttempt}}</span>
+  </section>
+  <section class="score">{{score}}</section>
+  }
+  }
+</div>

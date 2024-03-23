@@ -1,18 +1,20 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { numberToString } from '../../utils/app.helper';
+import { Bonus } from '../../../../model/frame.model';
+import { numberToString } from '../../../../utils/app.helper';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgClass],
   selector: 'app-frame',
   standalone: true,
-  imports: [NgClass],
-  templateUrl: './frame.component.html',
   styleUrl: './frame.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './frame.component.html',
 })
 export class FrameComponent {
   @Input() score: number | null = null;
   @Input() isCurrent: boolean = false;
+  @Input() bonus: Bonus = null;
   @Input({ transform: numberToString }) firstAttempt: string = '';
   @Input({ transform: numberToString }) secondAttempt: string = '';
 }
