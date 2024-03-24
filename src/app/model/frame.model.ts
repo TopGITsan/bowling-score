@@ -3,6 +3,7 @@ export interface Frame {
   rolls: number[];
   score: number;
   bonus: Bonus;
+  totalScore: number;
 }
 
 export function hasFrameSpare(frame: Frame | undefined): boolean {
@@ -15,12 +16,19 @@ export function hasFrameSpare(frame: Frame | undefined): boolean {
 export function hasFrameStrike(frame: Frame | undefined): boolean {
   return (frame?.rolls?.at(0) ?? 0) === 10;
 }
-
+// TODO: check if last frame &&  check for strike or spare. last frame can have 3 rolls.
 export function isFrameDone(frame: Frame | undefined): boolean {
   return (
     frame?.rolls.length === 2 ||
     (frame?.rolls.at(0) ?? 0) + (frame?.rolls.at(1) ?? 0) === 10
   );
+}
+
+export function setFrameScore(frame: Frame, score: number): Frame {
+  return {
+    ...frame,
+    score: score,
+  };
 }
 
 export function setFrameRoll(frame: Frame, pinsKnocked: number): Frame {

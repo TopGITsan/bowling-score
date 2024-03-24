@@ -1,9 +1,9 @@
 #frame {
-  border: 1px solid black;
   min-width: 5rem;
   min-height: 5rem;
   display: flex;
   flex-direction: column;
+  box-shadow: var(--black-shadow);
 
   .attempts {
     align-self: stretch;
@@ -22,9 +22,7 @@
   }
 
   #second {
-    border: 1px solid #000;
-    border-right: none;
-    border-top: none;
+    box-shadow: var(--black-shadow);
     width: 40%;
     align-content: center;
   }

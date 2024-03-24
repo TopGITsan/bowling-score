@@ -1,47 +1,55 @@
-import { Frame } from '../model/frame.model';
 
 export type BowlingAction<Action, Props = {}> = {
   type: Action;
 } & Props;
-export enum GameActionsType {
+export enum BowlingActionsType {
   START = '[GAME] Start',
-  ROLL = '[GAME] Roll',
   RESET = '[GAME] Reset',
-  NEW_FRAME = '[GAME] New frame',
+  ROLL = '[GAME] Roll',
   STORE_ROLL = '[GAME] STORE ROLL',
-  SPARE = '[GAME] Spare',
-  SRIKE = '[GAME] Strike',
+  NEW_FRAME = '[GAME] New frame',
+  UPDATE_SCORE = '[GAME] Update total score',
 }
 
-export class StartAction implements BowlingAction<GameActionsType.START> {
-  readonly type = GameActionsType.START;
+export class StartAction implements BowlingAction<BowlingActionsType.START> {
+  readonly type = BowlingActionsType.START;
 }
 
-export class ResetAction implements BowlingAction<GameActionsType.RESET> {
-  readonly type = GameActionsType.RESET;
+export class ResetAction implements BowlingAction<BowlingActionsType.RESET> {
+  readonly type = BowlingActionsType.RESET;
 }
 
-export class RollAction
-  implements BowlingAction<GameActionsType.ROLL>
-{
-  readonly type = GameActionsType.ROLL;
+export class RollAction implements BowlingAction<BowlingActionsType.ROLL> {
+  readonly type = BowlingActionsType.ROLL;
 }
 export class NewFrameAction
-  implements BowlingAction<GameActionsType.NEW_FRAME>
+  implements BowlingAction<BowlingActionsType.NEW_FRAME>
 {
-  readonly type = GameActionsType.NEW_FRAME;
+  readonly type = BowlingActionsType.NEW_FRAME;
 }
 
 export class StoreRollAction
-  implements BowlingAction<GameActionsType.STORE_ROLL, { pinsKnocked: number }>
+  implements BowlingAction<BowlingActionsType.STORE_ROLL, { pinsKnocked: number }>
 {
-  readonly type = GameActionsType.STORE_ROLL;
+  readonly type = BowlingActionsType.STORE_ROLL;
   constructor(public pinsKnocked: number) {}
 }
 
+export class UpdateScoreAction
+  implements
+    BowlingAction<
+      BowlingActionsType.UPDATE_SCORE,
+      { score: number; frameIndex: number }
+    >
+{
+  readonly type = BowlingActionsType.UPDATE_SCORE;
+  constructor(public score: number, public frameIndex: number) {}
+}
+
 export type BowlingActions =
-  | StartAction
-  | RollAction
   | NewFrameAction
+  | ResetAction
+  | RollAction
+  | StartAction
   | StoreRollAction
-  | ResetAction;
+  | UpdateScoreAction;

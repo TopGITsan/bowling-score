@@ -1,7 +1,6 @@
 import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Bonus } from '../../../../model/frame.model';
-import { numberToString } from '../../../../utils/app.helper';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -15,6 +14,6 @@ export class FrameComponent {
   @Input() score: number | null = null;
   @Input() isCurrent: boolean = false;
   @Input() bonus: Bonus = null;
-  @Input({ transform: numberToString }) firstAttempt: string = '';
-  @Input({ transform: numberToString }) secondAttempt: string = '';
+  @Input() firstAttempt: number | undefined;
+  @Input() secondAttempt: number | undefined;
 }

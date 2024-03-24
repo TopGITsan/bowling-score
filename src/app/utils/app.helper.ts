@@ -1,10 +1,6 @@
 import { DestroyRef, inject } from '@angular/core';
 import { MonoTypeOperatorFunction, Subject, takeUntil } from 'rxjs';
 
-export function numberToString(value: number | undefined) {
-  return value?.toString() ?? '';
-}
-
 export function untilDestroyed(): <T>() => MonoTypeOperatorFunction<T> {
   const subject = new Subject();
 

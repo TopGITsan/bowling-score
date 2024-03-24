@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+   /*
+    How to create "collapsed" borders around flex items and their container?
+    And here comed the trick:
+    https://codepen.io/savehansson/pen/DmxyEP
+   */
+  --black-shadow:
+  2px 0 0 0 black,
+  0 2px 0 0 black,
+  2px 2px 0 0 black,   /* Just to fix the corner */
+  2px 0 0 0 black inset,
+  0 2px 0 0 black inset;
+
+}

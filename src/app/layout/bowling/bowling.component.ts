@@ -9,6 +9,7 @@ import { GameStoreService } from '../../store/game-store.service';
 import { untilDestroyed } from '../../utils/app.helper';
 import { PlayerComponent } from './components/player/player.component';
 import { ScoreComponent } from './components/score/score.component';
+import { asapScheduler, observeOn } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,7 +40,7 @@ export class BowlingComponent {
 
   ngOnInit(): void {
     this.gameStoreService.state$
-      .pipe(this.untilDestroyed())
+      .pipe(this.untilDestroyed(), observeOn(asapScheduler))
       .subscribe((state) => {
         this.state = state;
         this.changeDetectorRef.detectChanges();
