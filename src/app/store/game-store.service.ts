@@ -77,7 +77,7 @@ export class GameStoreService {
         this.actionsSubject.next(action);
       }
     });
-    this.state$.pipe(observeOn(asapScheduler)).subscribe((state) => console.log('State:', state));
+    // this.state$.pipe(observeOn(asapScheduler)).subscribe((state) => console.log('State:', state));
   }
 
   private handleReducers(): void {
@@ -122,7 +122,6 @@ export class GameStoreService {
   private handleEffects(): Observable<BowlingActions | null> {
     return this.actions$.pipe(
       this.untilDestroyed(),
-      // tap((action: BowlingActions) => console.log('handle effect: ', action)),
       concatMap((action: BowlingActions) => {
         switch (action.type) {
           case BowlingActionsType.ROLL:
