@@ -28,7 +28,10 @@ export function isLastFrameDone(frame: Frame | undefined): boolean {
   if (frame?.rolls.length === 2 && !hasFrameSpare(frame)) {
     return true;
   }
-  if (frame?.rolls.length === 3 && (hasFrameStrike(frame) || hasFrameSpare(frame))) {
+  if (
+    frame?.rolls.length === 3 &&
+    (hasFrameStrike(frame) || hasFrameSpare(frame))
+  ) {
     return true;
   }
 
@@ -61,17 +64,9 @@ export function setFrameRoll(frame: Frame, pinsKnocked: number): Frame {
     };
   }
 
-  if (frame.rolls.length === 1) {
-    return {
-      ...frame,
-      rolls: [...frame.rolls, pinsKnocked],
-      score: frame.score + pinsKnocked,
-    };
-  }
-
   return {
     ...frame,
-    rolls: [pinsKnocked],
+    rolls: [...frame.rolls, pinsKnocked],
     score: frame.score + pinsKnocked,
   };
 }
