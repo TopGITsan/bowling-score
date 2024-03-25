@@ -14,7 +14,11 @@ import {
   take,
   withLatestFrom,
 } from 'rxjs';
-import { Frame, getFrameFirstRoll } from '../model/frame.model';
+import {
+  Frame,
+  getFrameFirstRoll,
+  isFrameDone,
+} from '../model/frame.model';
 import {
   Bowling,
   calculateScore,
@@ -80,42 +84,40 @@ export class GameStoreService {
   }
 
   private handleReducers(): void {
-    this.actions$
-      .pipe(this.untilDestroyed())
-      .subscribe((action) => {
-        if (action) {
-          switch (action.type) {
-            case BowlingActionsType.RESET:
-              // TODO should delete all frames
-              break;
-            case BowlingActionsType.START:
-              // TODO should add empty frames
-              break;
-            case BowlingActionsType.STORE_ROLL:
-              console.log('Reducer: ', action);
-              // TODO: separate next frame from set roll, move logic into effect
-              this.stateSubject.next({
-                ...setFrameRollInGame(
-                  moveToNextFrame(this.stateSubject.value),
-                  action.pinsKnocked
-                ),
-              });
-              break;
-            case BowlingActionsType.UPDATE_SCORE:
-              console.log('Reducer: ', action);
-              this.stateSubject.next({
-                ...setFrameScoreInGame(
-                  this.stateSubject.getValue(),
-                  action.score,
-                  action.frameIndex
-                ),
-              });
-              break;
-            default:
-              break;
-          }
+    this.actions$.pipe(this.untilDestroyed()).subscribe((action) => {
+      if (action) {
+        switch (action.type) {
+          case BowlingActionsType.RESET:
+            // TODO should delete all frames
+            break;
+          case BowlingActionsType.START:
+            // TODO should add empty frames
+            break;
+          case BowlingActionsType.STORE_ROLL:
+            console.log('Reducer: ', action);
+            // TODO: separate next frame from set roll, move logic into effect
+            this.stateSubject.next({
+              ...setFrameRollInGame(
+                moveToNextFrame(this.stateSubject.value),
+                action.pinsKnocked
+              ),
+            });
+            break;
+          case BowlingActionsType.UPDATE_SCORE:
+            console.log('Reducer: ', action);
+            this.stateSubject.next({
+              ...setFrameScoreInGame(
+                this.stateSubject.getValue(),
+                action.score,
+                action.frameIndex
+              ),
+            });
+            break;
+          default:
+            break;
         }
-      });
+      }
+    });
   }
 
   private handleEffects(): Observable<BowlingActions | null> {
@@ -134,11 +136,15 @@ export class GameStoreService {
                 }
                 let pinsKnocked = 0;
                 let firstRoll = getFrameFirstRoll(currentFrame);
+                if (isFrameDone(currentFrame)) {
+                  pinsKnocked = random(0, 11);
+                  return new StoreRollAction(pinsKnocked);
+                }
                 if (firstRoll == undefined) {
                   pinsKnocked = random(0, 11);
                   return new StoreRollAction(pinsKnocked);
                 }
-                if (firstRoll ?? 0 < 10) {
+                if (firstRoll < 10) {
                   pinsKnocked = random(0, 11 - (firstRoll ?? 0));
                   return new StoreRollAction(pinsKnocked);
                 }
