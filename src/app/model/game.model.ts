@@ -27,7 +27,7 @@ export function getPreviousFrame(game: Bowling): Frame | undefined {
 }
 
 export function isLastFrame(game: Bowling): boolean {
-  return game.currentFrameIndex === game.maxFrames;
+  return game.currentFrameIndex === game.maxFrames -1;
 }
 
 // TODO: there is no bonus frame , only added rolls in last frame
@@ -38,35 +38,6 @@ export function isBonusFrame(game: Bowling): boolean {
 export function isAllStrikes(game: Bowling): boolean {
   return game.strikeCounter === game.maxFrames;
 }
-
-// export function checkAndUpdateGameWithBonusFrame(game: Bowling): Bowling {
-//   let frame = getCurrentFrame(game);
-
-//   if (!frame) {
-//     return game;
-//   }
-
-//   if (!isLastFrame(game)) {
-//     return game;
-//   }
-//   if (!hasFrameSpare(frame) || !hasFrameStrike(frame)) {
-//     return game;
-//   }
-//   // add bonus frame
-//   return {
-//     ...game,
-//     currentFrameIndex: game.currentFrameIndex + 1,
-//     frames: [
-//       ...game.frames,
-//       {
-//         rolls: [],
-//         score: 0,
-//         bonus: null,
-//         totalScore: 0
-//       },
-//     ],
-//   };
-// }
 
 export function moveToNextFrame(game: Bowling): Bowling {
   let frame = getCurrentFrame(game);
@@ -79,14 +50,10 @@ export function moveToNextFrame(game: Bowling): Bowling {
     return game;
   }
 
-  // if (isBonusFrame(game)) {
-  //   return game;
-  // }
-
-  if (game.currentFrameIndex === game.maxFrames) {
+  if (isLastFrame(game)) {
     return game;
   }
-  // TODO: bug in game.currentFrameIndex + 1,
+
   return {
     ...game,
     strikeCounter: hasFrameStrike(frame)
