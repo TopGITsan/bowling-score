@@ -3,6 +3,7 @@ import {
   hasFrameSpare,
   hasFrameStrike,
   isFrameDone,
+  isLastFrameDone,
   setFrameRoll,
 } from './frame.model';
 
@@ -106,9 +107,14 @@ export function setFrameRollInGame(
     return game;
   }
 
-  if (isFrameDone(frame)) {
+  if (isFrameDone(frame) && !isLastFrame(game)) {
     return game;
   }
+
+  if (isLastFrame(game) && isLastFrameDone(frame)) {
+    return game;
+  }
+
   frame = setFrameRoll(frame, pinsKnocked);
   const frames = game.frames;
   frames[game.currentFrameIndex] = frame;
@@ -178,7 +184,8 @@ export function calculateScoreS(rolls: number[], gameLength: number): number {
         10 + (rolls[rollIndex + 1] ?? 0) + (rolls.at(rollIndex + 2) ?? 0);
       rollIndex++;
     } else if (
-      (rolls?.at(rollIndex) ?? 0) + (rolls.at(rollIndex + 1) ?? 0) === 10
+      (rolls?.at(rollIndex) ?? 0) + (rolls.at(rollIndex + 1) ?? 0) ===
+      10
     ) {
       score += 10 + (rolls.at(rollIndex + 2) ?? 0);
       rollIndex += 2;

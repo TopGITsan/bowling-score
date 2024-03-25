@@ -24,6 +24,17 @@ export function isFrameDone(frame: Frame | undefined): boolean {
   );
 }
 
+export function isLastFrameDone(frame: Frame | undefined): boolean {
+  if (frame?.rolls.length === 2 && !hasFrameSpare(frame)) {
+    return true;
+  }
+  if (frame?.rolls.length === 3 && (hasFrameStrike(frame) || hasFrameSpare(frame))) {
+    return true;
+  }
+
+  return false;
+}
+
 export function setFrameScore(frame: Frame, score: number): Frame {
   return {
     ...frame,

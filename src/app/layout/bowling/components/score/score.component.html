@@ -1,10 +1,12 @@
-@for (item of state?.frames; track item) {
+@for (frame of state?.frames; track frame) {
 <app-frame
-  [bonus]="item.bonus"
-  [firstAttempt]="item.rolls.at(0)"
+  [bonus]="frame.bonus"
+  [firstAttempt]="frame.rolls.at(0)"
   [isCurrent]="state?.currentFrameIndex === $index"
-  [score]="item.totalScore"
-  [secondAttempt]="item.rolls.at(1)"
+  [isLastFrame]="$index === 9"
+  [rolls]="frame.rolls"
+  [score]="frame.totalScore"
+  [secondAttempt]="frame.rolls.at(1)"
   />
 } @empty {
   <p>No frames</p>
