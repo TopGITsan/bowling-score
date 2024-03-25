@@ -25,7 +25,7 @@ export function isFrameDone(frame: Frame | undefined): boolean {
 }
 
 export function isLastFrameDone(frame: Frame | undefined): boolean {
-  if (frame?.rolls.length === 2 && !hasFrameSpare(frame)) {
+  if (frame?.rolls.length === 2 && !hasFrameSpare(frame) && !hasFrameStrike(frame)) {
     return true;
   }
   if (
