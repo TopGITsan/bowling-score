@@ -134,11 +134,10 @@ export class GameStoreService {
                 }
                 let pinsKnocked = 0;
                 let firstRoll = getFrameFirstRoll(currentFrame);
-                if (!!!getFrameFirstRoll(currentFrame)) {
+                if (firstRoll == undefined) {
                   pinsKnocked = random(0, 11);
                   return new StoreRollAction(pinsKnocked);
                 }
-                // TODO
                 if (firstRoll ?? 0 < 10) {
                   pinsKnocked = random(0, 11 - (firstRoll ?? 0));
                   return new StoreRollAction(pinsKnocked);
