@@ -3,11 +3,13 @@
   min-height: 5rem;
   display: flex;
   flex-direction: column;
-  box-shadow: var(--black-shadow);
+  box-shadow: var(--gray-shadow);
+  margin-bottom: 1rem;
 
   .attempts {
-    align-self: stretch;
+    // align-self: stretch;
     display: flex;
+    gap:3px;
   }
 
   .attempts span {
@@ -26,6 +28,19 @@
     width: 40%;
     align-content: center;
   }
+
+  .last {
+    box-shadow: var(--black-shadow);
+    flex-basis: 100%;
+    align-content: center;
+  }
+  .last:first-child {
+    box-shadow: none;
+  }
+  .box-shadow {
+    box-shadow: var(--black-shadow) !important;
+  }
+
 
   .score {
     text-align: center;

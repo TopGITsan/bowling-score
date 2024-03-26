@@ -3,14 +3,15 @@
     @switch (bonus) {
       @case ('strike') {
       <section class="attempts">
-        <span id="first" style="background-color: black;">X</span>
-        <span id="second" [ngStyle]="{'background-color': rolls[1]===10 ? 'black' : null }">{{rolls[2]}}</span>
+        <span style="width: 1rem;"></span>
+        <span class="last box-shadow" style="background-color: black;">X</span>
+        <span class="last" [ngStyle]="{'background-color': rolls[1]===10 ? 'black' : null }">{{rolls[2]}}</span>
         @if(rolls[1]+rolls[2] === 10 && rolls[1] < 10){
-          <span id="second" style="background: linear-gradient(143deg, white 50%, black 50%);"></span>
+          <span class="last" style="background: linear-gradient(143deg, white 50%, black 50%);"></span>
         } @else if(rolls[2] === 10) {
-          <span id="second" [ngStyle]="{'background-color': rolls[2]===10 ? 'black' : null }">X</span>
+          <span class="last" [ngStyle]="{'background-color': rolls[2]===10 ? 'black' : null }">X</span>
         } @else {
-          <span id="second">{{rolls[2]}}</span>
+          <span class="last">{{rolls[2]}}</span>
         }
       </section>
       <section class="score">{{score}}</section>
@@ -18,18 +19,17 @@
 
       @case ('spare') {
       <section class="attempts">
-        <span id="first">{{firstAttempt}}</span>
-        <span id="second" style="background: linear-gradient(143deg, white 50%, black 50%);"></span>
-        <span id="second" [ngStyle]="{'background-color': rolls[2]===10 ? 'black' : null }">{{rolls[2]}}</span>
+        <span class="last">{{firstAttempt}}</span>
+        <span class="last" style="background: linear-gradient(143deg, white 50%, black 50%);"></span>
+        <span class="last" [ngStyle]="{'background-color': rolls[2]===10 ? 'black' : null }">{{rolls[2]}}</span>
       </section>
       <section class="score">{{score}}</section>
       }
 
       @default {
       <section class="attempts">
-        <span id="first">{{rolls[0]}}</span>
-        <span id="second">{{rolls[1]}}</span>
-        <span id="second">{{rolls[2]}}</span>
+        <span class="last">{{rolls[0]}}</span>
+        <span class="last">{{rolls[1]}}</span>
       </section>
       <section class="score">{{score}}</section>
       }
