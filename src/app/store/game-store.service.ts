@@ -18,11 +18,13 @@ import {
   Frame,
   getFrameFirstRoll,
   isFrameDone,
+  isLastFrameDone,
 } from '../model/frame.model';
 import {
   Bowling,
   calculateScore,
   getCurrentFrame,
+  isLastFrame,
   moveToNextFrame,
   setFrameRollInGame,
   setFrameScoreInGame,
@@ -132,6 +134,9 @@ export class GameStoreService {
               map((state: Bowling) => {
                 const currentFrame = getCurrentFrame(state);
                 if (!currentFrame) {
+                  return null;
+                }
+                if (isLastFrame(state) && isLastFrameDone(currentFrame)) {
                   return null;
                 }
                 let pinsKnocked = 0;
