@@ -11,5 +11,11 @@
   2px 2px 0 0 black,   /* Just to fix the corner */
   2px 0 0 0 black inset,
   0 2px 0 0 black inset;
+  --gray-shadow:
+  2px 0 0 0 gray,
+  0 2px 0 0 gray,
+  2px 2px 0 0 gray,   /* Just to fix the corner */
+  2px 0 0 0 gray inset,
+  0 2px 0 0 gray inset;
 
 }
