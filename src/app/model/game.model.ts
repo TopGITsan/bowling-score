@@ -141,25 +141,3 @@ export function calculateScore(game: Bowling, gameLength: number): number {
   }
   return score;
 }
-// TODO: possibile bug ? double check
-export function calculateScoreS(rolls: number[], gameLength: number): number {
-  let score: number = 0;
-  let rollIndex: number = 0;
-  for (let frameIndex = 0; frameIndex <= gameLength; frameIndex++) {
-    if (rolls[rollIndex] === 10) {
-      score +=
-        10 + (rolls[rollIndex + 1] ?? 0) + (rolls.at(rollIndex + 2) ?? 0);
-      rollIndex++;
-    } else if (
-      (rolls?.at(rollIndex) ?? 0) + (rolls.at(rollIndex + 1) ?? 0) ===
-      10
-    ) {
-      score += 10 + (rolls.at(rollIndex + 2) ?? 0);
-      rollIndex += 2;
-    } else {
-      score += (rolls.at(rollIndex) ?? 0) + (rolls.at(rollIndex + 1) ?? 0);
-      rollIndex += 2;
-    }
-  }
-  return score;
-}
