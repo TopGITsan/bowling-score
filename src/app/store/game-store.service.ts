@@ -5,11 +5,11 @@ import {
   Subject,
   concatMap,
   distinctUntilChanged,
-  from,
   map,
   observeOn,
   of,
   queueScheduler,
+  range,
   switchMap,
   take,
   withLatestFrom,
@@ -143,7 +143,7 @@ export class GameStoreService {
                 let firstRoll = getFrameFirstRoll(currentFrame);
                 if (isFrameDone(currentFrame)) {
                   pinsKnocked = random(0, 11);
-                  return new StoreRollAction(pinsKnocked);
+                  return new StoreRollAction(10);
                 }
                 if (firstRoll == undefined) {
                   pinsKnocked = random(0, 11);
@@ -168,9 +168,9 @@ export class GameStoreService {
                 if (!currentFrame) {
                   return of([]);
                 }
-                return from(
-                  Array.from({ length: currentFrameIndex + 1 }, (e, i) => i)
-                ).pipe(withLatestFrom(of(state)));
+                return range(0, currentFrameIndex + 1).pipe(
+                  withLatestFrom(of(state))
+                );
               }),
               map(([gameLength, state]) => {
                 if (!state) {
