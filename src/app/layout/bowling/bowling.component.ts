@@ -29,7 +29,7 @@ import { ScoreComponent } from './components/score/score.component';
   `,
 })
 export class BowlingComponent {
-  readonly gameStoreService: GameStoreService =
+  private readonly gameStoreService: GameStoreService =
     inject(GameStoreService);
 
   readonly state$: Observable<Bowling> = this.gameStoreService.state$;
