@@ -15,6 +15,6 @@ import { FrameComponent } from '../frame/frame.component';
   templateUrl: './score.component.html',
 })
 export class ScoreComponent {
-  @Input() state: Bowling | undefined;
+  @Input() state?: Bowling | null;
 
 }

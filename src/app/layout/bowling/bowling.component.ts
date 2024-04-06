@@ -1,19 +1,18 @@
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   inject,
 } from '@angular/core';
+import { Observable } from 'rxjs';
 import { Bowling } from '../../model/game.model';
 import { GameStoreService } from '../../store/game-store.service';
-import { untilDestroyed } from '../../utils/app.helper';
 import { PlayerComponent } from './components/player/player.component';
 import { ScoreComponent } from './components/score/score.component';
-import { asapScheduler, observeOn } from 'rxjs';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ScoreComponent, PlayerComponent],
+  imports: [AsyncPipe, ScoreComponent, PlayerComponent],
   selector: 'app-bowling',
   standalone: true,
   styles: `
@@ -23,29 +22,17 @@ import { asapScheduler, observeOn } from 'rxjs';
   }
   `,
   template: `
-    <app-score [state]="state" />
+    <app-score [state]="state$ | async" />
     <section class="table">
       <app-player (roll)="onRoll()" />
     </section>
   `,
 })
 export class BowlingComponent {
-  private readonly gameStoreService: GameStoreService =
+  readonly gameStoreService: GameStoreService =
     inject(GameStoreService);
 
-  private readonly changeDetectorRef = inject(ChangeDetectorRef);
-  private readonly untilDestroyed = untilDestroyed();
-
-  state: Bowling | undefined;
-
-  ngOnInit(): void {
-    this.gameStoreService.state$
-      .pipe(this.untilDestroyed(), observeOn(asapScheduler))
-      .subscribe((state) => {
-        this.state = state;
-        this.changeDetectorRef.detectChanges();
-      });
-  }
+  readonly state$: Observable<Bowling> = this.gameStoreService.state$;
 
   onRoll() {
     this.gameStoreService.handleRoll();
